@@ -1,5 +1,10 @@
+# if you want to turn this into a script:
+#!/usr/bin/env ruby
+
 class Greeter
 
+	# define default getter and setter, just like making the field public
+	# if you define custom getters they will override the defaults, ofc.
 	attr_accessor :name
 
 	# constructor
@@ -32,7 +37,7 @@ class Greeter
 
 end
 
-g = Greeter.new "Andy"
+g = Greeter.new("Andy", "Rudy", "Seth")
 
 #g.hi
 #g.class.whoami
