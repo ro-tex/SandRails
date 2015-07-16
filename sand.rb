@@ -178,6 +178,23 @@ a multiline comment
 in Ruby.
 =end
 
+def fix
+  File.open("/home/rifiniti/zone_cap.csv", "r") do |f|
+    f.each_line do |line|
+
+      space_info = line.split(',')
+
+      if space_info[2].to_i == 29.to_i
+        z = Zone.find(space_info[0])
+        z.workstation_capacity = space_info[4]
+        z.meeting_room_capacity = space_info[5]
+        z.support_occupied_capacity = space_info[6]
+        z.save!
+      end
+    end
+  end
+end
+
 def tag_list= value # I guess a way to define a param?
   self.tags = value.split(',').map(&:strip) # why do we need the &? how does map work? what's :strip, exactly?
 end
