@@ -2,12 +2,15 @@
 #!/usr/bin/env ruby
 # or this: #!/usr/bin/ruby
 
+$LOAD_PATH << '.' # tells Ruby to look for files in the current dir
+
+require 'lib'
+
 class Greeter
 
   # define default getter and setter, just like making the field public
   # if you define custom getters they will override the defaults, ofc.
   attr_accessor :name
-
 
   # Variables:
   local_variable = 'local'
@@ -15,7 +18,6 @@ class Greeter
   @@class_variable = 'class'
   $global_variable = 'global'
   CONSTANT = 'constant' # but only as a convention
-
 
   #How do you define a class variable?
   @@my_name = "Groot"
@@ -48,11 +50,15 @@ class Greeter
     puts "Bye #{@name.capitalize}"
   end
 
+  def self.foo
+    puts Lib.foo
+  end
+
 end
 
 # This allows a file to be used as a library, and not to execute code in that context,
 # but if the file is being used as an executable, then execute that code.
-if __FILE__ == $0
+if __FILE__ == $0 and false
 
   g = Greeter.new "Andy"
   #g.hi
@@ -98,14 +104,15 @@ if __FILE__ == $0
   arr = "asdf"
   # a nice, flexible switch... erm... case
   case arr
-    when nil
-      puts "arr is nil!"
-    when 1
-      puts "arr is one"
-    when "asdf"
-      puts arr
-    else
-      puts "none of the above"
+  when nil
+    puts "arr is nil!"
+
+    #when 1..5: puts "arr is one"
+
+  when "asdf", "asdfg" then puts arr
+
+  else
+    puts "none of the above"
   end
 
   for i in 1..5
@@ -127,7 +134,7 @@ if __FILE__ == $0
   end
 
   for i in 1..5
-   retry if false # restart from i == 1
+    #retry if false # restart from i == 1
   end
 
   arr.nil? do
@@ -152,20 +159,11 @@ if __FILE__ == $0
 
 end
 
-BEGIN {
-   puts "# Initializing the program with a BEGIN statement #"
-}
-
-END {
-   puts "# Wrapping things up in an END statement #"
-}
-
 n = 1_024 # underscores are ignored in integers
 
 a = 1
 b = 1.0
 c = 1.0
-
 a == b # true
 a.eql?(b) # false
 b.eql?(c) # true
@@ -178,31 +176,28 @@ a multiline comment
 in Ruby.
 =end
 
-def fix
-  File.open("/home/rifiniti/zone_cap.csv", "r") do |f|
-    f.each_line do |line|
-
-      space_info = line.split(',')
-
-      if space_info[2].to_i == 29.to_i
-        z = Zone.find(space_info[0])
-        z.workstation_capacity = space_info[4]
-        z.meeting_room_capacity = space_info[5]
-        z.support_occupied_capacity = space_info[6]
-        z.save!
-      end
-    end
-  end
-end
+#Greeter.all
+#Greeter.where(name: 'Groot', instance_variable: 'instance')
 
 def tag_list= value # I guess a way to define a param?
   self.tags = value.split(',').map(&:strip) # why do we need the &? how does map work? what's :strip, exactly?
 end
 
-def self.hash_password(username, password) 
-  hidden_salt = "i#p2+W~t$2=.fv&6"
-  salt = "" 
-  (username + hidden_salt).bytes.each do |b| salt = salt + b.to_s(16) end 
-  salt = (username + hidden_salt).bytes.inject do |salt, b| salt + b.to_s(16) end 
-  return Digest::SHA256.hexdigest(salt + password) 
-end
+a ||= {} # conditional initialisation - nothing happens if already initialised
+
+def foo(*arr) ap arr end # variable number of arguments
+alias bar foo # pointer to a function. points to the original function even after foo is overridden
+undef foo # bar is still callable
+
+# after_initialize do |space|
+#   space.description = space.alt_name if !space.alt_name.nil? and space.alt_name.size > 0
+# end
+
+# def block
+#   yield 1
+#   yield 2, 3
+#   yield
+# end
+# block { |val| puts "Block with value #{val}"}
+
+Greeter.foo
