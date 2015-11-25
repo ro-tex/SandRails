@@ -56,17 +56,24 @@ class Greeter
 
 end
 
+#Greeter.all
+#Greeter.where(name: 'Groot', instance_variable: 'instance')
+
+#Greeter.foo # this is how we use libraries
+
 # This allows a file to be used as a library, and not to execute code in that context,
 # but if the file is being used as an executable, then execute that code.
-if __FILE__ == $0 and false
+if __FILE__ == $0
+  #puts 'Our sand.rb is being used directly - as an executable file.'
+end
 
-  g = Greeter.new "Andy"
-  #g.hi
-  #g.class.whoami
-  #g.name = "a"
-  #puts g.name
+g = Greeter.new "Andy"
+#g.hi
+#g.class.whoami
+#g.name = "a"
+#puts g.name
 
-  puts ">>> Playing around with arrays and loops <<<"
+if false # basics
   arr = ["a", "b", "c"]
 
   if arr.respond_to?("each") # THIS CHECKS IF WE CAN ITERATE OVER THE COLLECTION WITH EACH! OMFG!
@@ -74,7 +81,7 @@ if __FILE__ == $0 and false
       puts e + " in a loop"
     end
   else
-    puts "arr is not each-able. This is what it looks like: " + arr.to_s
+    puts "arr is not each-able. This is what it looks like: #{arr}"
   end
 
   puts "This is a joined list: #{arr.join(", ")}" # notice the quotes in quotes!
@@ -85,35 +92,29 @@ if __FILE__ == $0 and false
   puts "arr is nil" if arr.nil? # trailing if demo
   puts 'trailing unless' unless false
 
-  unless (false)
+  unless false
     puts 'regular unless'
   end
 
   puts !arr.nil? && arr.length > 0 ? ("arr len is " + arr.length.to_s) : "empty" # shorthand if works
 
-  # ranges that exclude the end value (use .. to include it):
-  (1...3).each do |a|
-    puts a
-  end
+  (1...3).each { |a| puts a } # ranges that exclude the end value (use .. to include it):
 
-  # hashes
-  {"a" => 1, "b" => 3}.each do |k, v|
-    puts "key #{k} -> value #{v}"
-  end
+  {"a" => 1, "b" => 3}.each { |k, v| puts "key #{k} -> value #{v}" } # hashes
 
   arr = "asdf"
   # a nice, flexible switch... erm... case
   case arr
   when nil
     puts "arr is nil!"
-
     #when 1..5: puts "arr is one"
-
   when "asdf", "asdfg" then puts arr
-
   else
     puts "none of the above"
   end
+end # basics
+
+if false # exceptions_and_control
 
   for i in 1..5
     # do nothing
@@ -137,10 +138,9 @@ if __FILE__ == $0 and false
     #retry if false # restart from i == 1
   end
 
-  arr.nil? do
-    puts "."
-    arr = nil
-  end
+end # exceptions_and_control
+
+if false # multi-dimentional returns and processing
 
   #define a method that returns a value
   def get_arr
@@ -155,9 +155,9 @@ if __FILE__ == $0 and false
     puts "#{b1} # #{b2} # #{b3}"
   end
 
-  defined? $_ #always true
-
 end
+
+defined? $_ #always true
 
 n = 1_024 # underscores are ignored in integers
 
@@ -176,28 +176,56 @@ a multiline comment
 in Ruby.
 =end
 
-#Greeter.all
-#Greeter.where(name: 'Groot', instance_variable: 'instance')
-
 def tag_list= value # I guess a way to define a param?
   self.tags = value.split(',').map(&:strip) # why do we need the &? how does map work? what's :strip, exactly?
 end
 
 a ||= {} # conditional initialisation - nothing happens if already initialised
 
-def foo(*arr) ap arr end # variable number of arguments
-alias bar foo # pointer to a function. points to the original function even after foo is overridden
-undef foo # bar is still callable
+def foo(*args) ap arr args end # variable number of arguments
 
-# after_initialize do |space|
+alias bar foo # pointer to a function. points to the original function even after foo is overridden
+
+undef foo # remove foo but bar is still callable
+
+# after_initialize do |space| # this is a post-construction hook
 #   space.description = space.alt_name if !space.alt_name.nil? and space.alt_name.size > 0
 # end
 
-# def block
-#   yield 1
-#   yield 2, 3
-#   yield
-# end
-# block { |val| puts "Block with value #{val}"}
+if false # Blocks
 
-Greeter.foo
+  def block
+    yield 1
+    yield 2, 3
+    yield
+  end
+  block { |val| puts "Block with value #{val}"}
+
+end
+
+if false # Modules
+
+  module Mod1
+    CONST1 = 12345
+    def foo
+      puts "Mod1 #{CONST1}"
+    end
+  end
+
+  module Mod2
+    CONST2 = 54321
+    def foo
+      puts "Mod2 #{CONST2}"
+    end
+  end
+
+  class C
+    include Mod1
+    include Mod2
+  end
+
+  C.new.foo # Mod2 is included second, so it overwrites Mod1's methods where they overlap
+  puts C::CONST1
+  puts C::CONST2
+
+end # Modules
