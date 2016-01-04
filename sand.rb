@@ -192,14 +192,37 @@ undef foo # remove foo but bar is still callable
 #   space.description = space.alt_name if !space.alt_name.nil? and space.alt_name.size > 0
 # end
 
-if false # Blocks
+if true # Blocks
 
   def block
+    puts ' === block === '
     yield 1
     yield 2, 3
     yield
+    puts ' === end === '
   end
-  block { |val| puts "Block with value #{val}"}
+  block { |val| puts "Block with value #{val}"} # this line is the call, i.e. executes the function
+
+  def foo x
+    puts ' === foo === '
+
+    unless block_given?
+      puts "no block, x is #{x}"
+      puts ' === end === '
+      return
+    end
+
+    puts "outside #{x}"
+    yield x
+    puts "outside #{x}"
+    yield x
+
+    puts ' === end === '
+  end
+  foo(1) # Try without giving a block
+  foo(1) { |n| n += 10; puts "in da block: #{n}" } # Executes foo but can't change the local variable x
+  l = -> n { n += 20; puts "in da lambda: #{n}"}
+  foo(1, &l) # This is the most functional bit - passing a named lambda
 
 end
 
@@ -229,3 +252,41 @@ if false # Modules
   puts C::CONST2
 
 end # Modules
+
+# String ops
+if false
+  # puts %{this is a string} # delimiters: !, {, [, (, <.
+  # puts %q(this is a single-quoted string: #{1+2+3})
+  # puts %Q(this is a double-quoted string: #{1+2+3})
+  # puts %x{ls -lh} # this string is the output of the command
+  puts " lala   ".strip # remove whitespaces
+  puts "abcdefg"[2..5] # "cdef" - substring
+  puts "abcdefg"[2, 5] # "cdefg" - offset, length
+  puts "abcdefg"[-5, 2] # negative fixnum starts from the end
+  puts "abcdefg"[/bcd/] # substring by regex
+
+  "abc".is_a?(String) # typeof check
+  "abc".instance_of? String
+  "abc".respond_to?(:to_s) # Duck typing, if it qucks like a string then it's a string
+
+  "abc".inspect # Returns a printable version of str, with special characters escaped.
+  "abc".intern === "abc".to_sym # Returns the Symbol corresponding to str, creating the symbol if it did not previously exist.
+  "abc".scan('a') {|match| puts match}
+end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
