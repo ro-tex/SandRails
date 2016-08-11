@@ -1,15 +1,15 @@
-class ModelTest < ActionController::TestCase
+require 'test_helper'
+
+class ModelTest < ActiveSupport::TestCase
+  # test "the truth" do
+  #   assert true
+  # end
+
   setup do
     @model = Model.new
   end
 
-  test 'should get new' do
-    get :new
-    assert_response :success
-  end
-
   test 'should echo' do
-    m = Model.new
-    assert m.echo('input') == 'input'
+    assert @model.echo('input') == 'input'
   end
 end
