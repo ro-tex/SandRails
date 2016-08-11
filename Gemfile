@@ -45,6 +45,10 @@ group :development, :test do
   gem 'spring'
 end
 
+group :test do
+  gem 'rspec'
+end
+
 # Heroku
 gem 'pg'
 gem 'rails_log_stdout',           github: 'heroku/rails_log_stdout'
