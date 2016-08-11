@@ -13,5 +13,9 @@ class Model
   def quick
   	puts 'oi!'
   end
+  
+  def echo input
+    return input
+  end
 
 end
