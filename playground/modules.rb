@@ -1,4 +1,4 @@
-$LOAD_PATH << '.'
+$LOAD_PATH << './playground'
 
 require 'gecko'
 
@@ -10,4 +10,14 @@ class ModuleUser
   end
 end
 
-ModuleUser.new.print_name
+mo = ModuleUser.new
+mo.print_name
+
+# On the fly object rewriting! Mind = blown! Hadn't seen this fucked up shit since Perl days.
+class << mo
+  def print_name
+    puts "I'm not Leopold! Ha!"
+  end
+end
+
+mo.print_name
