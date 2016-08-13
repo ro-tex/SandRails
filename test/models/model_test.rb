@@ -10,7 +10,7 @@ class ModelTest < ActiveSupport::TestCase
   end
 
   test 'should echo' do # could have named it test_echo
-    assert @model.echo(@input) == @input, 'Make sure the echo method returns its input without changing it.'
+    assert_equal @input, @model.echo(@input), 'Make sure the echo method returns its input without changing it.'
   end
 
   # This is a test that would fail because we're using an undefined variable.
@@ -25,4 +25,10 @@ class ModelTest < ActiveSupport::TestCase
       assert_success @model.undefined_method
     end
   end
+
+  # http://guides.rubyonrails.org/testing.html#available-assertions
+  # http://docs.seattlerb.org/minitest/Minitest/Assertions.html
+
+  #	Ensures that the numbers expected and actual are within delta of each other.
+  # assert_in_delta( expected, actual, [delta], [msg] )
 end
