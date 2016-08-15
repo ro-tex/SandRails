@@ -11,6 +11,16 @@ class Private
     end
   end
 
+  def self.another_getter # public getter
+    another_fully_private
+  end
+
+  def self.another_fully_private # this will be private soon
+    puts 'I\'m private! Look at me priviting all over the place!'
+  end
+
+  private_class_method :another_fully_private
+
   private
 
   def self.not_so_private_name
@@ -22,3 +32,8 @@ end
 print 'via getter: '; Private.expose_private_name
 print 'via send: '; Private.send('print_name_private')
 Private.not_so_private_name
+
+puts
+# print 'direct: '; Private.another_fully_private
+print 'via getter: '; Private.another_getter
+print 'via send: '; Private.send 'another_fully_private'
