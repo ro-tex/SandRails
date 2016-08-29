@@ -5,7 +5,7 @@ class ModelTest < ActiveSupport::TestCase
   # The config.active_support.test_orderoption can be used to configure test order.
 
   setup do
-    @model = Model.new
+    @model = models(:mod) # using a fixture called 'mod'
     @input = 'loren ipsum'
   end
 

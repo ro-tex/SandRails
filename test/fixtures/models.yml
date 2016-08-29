@@ -9,3 +9,13 @@ one: {}
 #
 two: {}
 #  column: value
+mod:
+  field: I'm a model! Look at me - got a field, too!
+  # This 'category: things' will set up a 'belongs_to' link to 'things' which is a 'category'.
+  # category: things # 'things' must exist in fixtures/categories.yml
+
+# This ERB code will conveniently generate 10 model objects for us:
+<% 10.times do |n| %>
+mod_<%= n %>:
+  field: <%= "field#{n}" %>
+<% end %>
