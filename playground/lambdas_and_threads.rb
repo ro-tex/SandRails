@@ -85,13 +85,13 @@ puts "========================\n\n"
 
 def plus_1(y)
   x = 100
-  y.call # remembers the value of x = 1
+  y.call # remembers the value of x = 1 from the body of get_closure
 end
 
 def get_closure
   # the returned closure will work with this variable, always
   x = 0
-  -> { x += 1 }
+  -> { x += 1 } # this is the 'x = 1' the closure y will remember
 end
 
 y = get_closure
