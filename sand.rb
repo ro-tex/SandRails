@@ -99,6 +99,8 @@ if false # basics
   puts !arr.nil? && arr.length > 0 ? ("arr len is " + arr.length.to_s) : "empty" # shorthand if works
 
   (1...3).each { |a| puts a } # ranges that exclude the end value (use .. to include it):
+  
+  20.step(1, -3) {|x| puts x} # a fully crontolled for loop: from.step(to, step)
 
   {"a" => 1, "b" => 3}.each { |k, v| puts "key #{k} -> value #{v}" } # hashes
 
