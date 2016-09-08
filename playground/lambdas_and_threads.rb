@@ -137,3 +137,13 @@ rrr = get_r
 rrr.call
 rrr.call # these continue to increment the internal counter and keep the value affixed in the block
 rrr.call
+
+puts "========================\n\n"
+
+# Spin a task in a background process (only works on POSIX OSs)
+job1 = fork do
+  `top` # exec "top" or %x( top )
+end
+
+Process.detach(job1)
+
