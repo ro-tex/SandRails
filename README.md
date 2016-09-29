@@ -1,6 +1,6 @@
 ## SandRails [![Build Status](https://travis-ci.org/ro-tex/SandRails.svg?branch=development)](https://travis-ci.org/ro-tex/SandRails)
 
-Sandbox! Play time! Beware fo the notes! Do not run this code ('cause it won't run).
+Sandbox! Play time! Beware of the notes! Do not run this code ('cause it won't run).
 
 ## Contributing
 
