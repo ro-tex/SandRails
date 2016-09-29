@@ -9,11 +9,19 @@ class Model < ActiveRecord::Base
   # Delayed::Worker.new.run(Delayed::Job.find(id))
   # Delayed::Worker.new.run(Delayed::Job.last)
 
+  def self.pub(*args)
+    puts "public: #{args}"
+  end
+
   def quick
     puts 'oi!'
   end
 
   def echo(input)
     input
+  end
+  
+  def put_id
+    puts self.id.inspect
   end
 end
