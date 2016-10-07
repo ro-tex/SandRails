@@ -8,5 +8,5 @@ If you want to use RSpec, start with `rails generate rspec:install` or `rspec --
 
 If you have both RSpec test and ActiveSupport::TestCase tests, you can run them like this:
 $ rspec # RSpec
-$ rake # RSpec
+$ rake # RSpec but noisy - it will output some extra stuff
 $ rake test # ActiveSupport::TestCase

@@ -29,4 +29,8 @@ class Model < ActiveRecord::Base
   def double(n)
     2 * n.to_i
   end
+
+  def self.class_quick
+    puts 'oi!'
+  end
 end
