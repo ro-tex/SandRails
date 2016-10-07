@@ -27,6 +27,6 @@ class Model < ActiveRecord::Base
 
   # We just want to have someting testable
   def double(n)
-    n * 2
+    2 * n.to_i
   end
 end
