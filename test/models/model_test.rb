@@ -9,7 +9,11 @@ class ModelTest < ActiveSupport::TestCase
     @input = 'loren ipsum'
   end
 
-  test 'should echo' do # could have named it test_echo
+  def test_echo
+    assert_equal @input, @model.echo(@input), 'Make sure the echo method returns its input without changing it.'
+  end
+
+  test 'should echo' do # identical to test_echo but allows more readable names
     assert_equal @input, @model.echo(@input), 'Make sure the echo method returns its input without changing it.'
   end
 
