@@ -1,8 +1,16 @@
 require 'rails_helper'
 
 describe Model do
-  before do
+  # This section can also be called 'setup'
+  # :all can be :each and so on
+  before :all do
+    puts 'Setting up the test environment.'
     @mod = Model.new
+  end
+
+  after :all do
+    @mod.destroy
+    puts "\nThe test environment is now destroyed."
   end
 
   # All describes on the chain should form a readable sentence.
@@ -12,9 +20,18 @@ describe Model do
       expect(@mod.double(-23)).not_to eq(6)
     end
 
-    it 'should double a string, after converting it to an integer' do
-      expect(@mod.double('3')).to eq(6)
-      expect(@mod.double('3asdf')).to eq(6)
+    # Context is basically the same as 'describe' but signals a special case
+    context 'given a nil' do
+      it 'should return zero' do
+        expect(@mod.double(nil)).to eq(0)
+      end
+    end
+
+    context 'given a string' do
+      it 'should double its integer value' do
+        expect(@mod.double('-3')).to eq(-6)
+        expect(@mod.double('3asdf')).to eq(6)
+      end
     end
   end
 

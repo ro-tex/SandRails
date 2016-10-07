@@ -10,3 +10,6 @@ If you have both RSpec test and ActiveSupport::TestCase tests, you can run them 
 $ rspec # RSpec
 $ rake # RSpec but noisy - it will output some extra stuff
 $ rake test # ActiveSupport::TestCase
+
+RSpec matchers: https://relishapp.com/rspec/rspec-expectations/v/3-5/docs/built-in-matchers
+
