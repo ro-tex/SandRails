@@ -23,6 +23,9 @@ gem 'delayed_job_active_record'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
+# Use Unicorn as the app server
+gem 'unicorn'
+
 gem 'ruby-spark'
 
 group :development do
@@ -40,9 +43,6 @@ group :development do
 
   # Use Capistrano for deployment
   gem 'capistrano-rails'
-
-  # Use Unicorn as the app server
-  gem 'unicorn'
 end
 
 group :development, :test do
@@ -50,11 +50,12 @@ group :development, :test do
   gem 'sqlite3'
 end
 
+group :test do
+  gem 'rspec-rails'
+end
+
 group :production do
   # Heroku
   gem 'pg'
   gem 'rails_log_stdout', github: 'heroku/rails_log_stdout'
-
-  # Use Unicorn as the app server
-  gem 'unicorn'
 end

@@ -20,8 +20,13 @@ class Model < ActiveRecord::Base
   def echo(input)
     input
   end
-  
+
   def put_id
-    puts self.id.inspect
+    puts id.inspect
+  end
+
+  # We just want to have someting testable
+  def double(n)
+    n * 2
   end
 end
