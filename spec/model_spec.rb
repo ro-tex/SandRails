@@ -6,6 +6,6 @@ describe Model do
   end
 
   it 'should double an integer' do
-    @mod.double(3).should eq(6)
+    expect(@mod.double(3)).to eq(6)
   end
 end
