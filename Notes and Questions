@@ -9,7 +9,8 @@ If you want to use RSpec, start with `rails generate rspec:install` or `rspec --
 If you have both RSpec test and ActiveSupport::TestCase tests, you can run them like this:
 $ rspec # RSpec
 $ rake # RSpec but noisy - it will output some extra stuff
-$ rake test # ActiveSupport::TestCase
+$ rake test # Minitest (ActiveSupport::TestCase)
 
 RSpec matchers: https://relishapp.com/rspec/rspec-expectations/v/3-5/docs/built-in-matchers
 
+Minitest assertions: http://docs.seattlerb.org/minitest/Minitest/Assertions.html
