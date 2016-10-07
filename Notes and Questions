@@ -1,0 +1,12 @@
+How does this work? What are the allowed methods passed? Can we use it in other block-passing cases?
+  [1, 2, 3].map(&:to_s)
+
+Yo, check this out!
+  ["1", "2", "3"].map(&method(:Integer))
+
+If you want to use RSpec, start with `rails generate rspec:install` or `rspec --init` (in case you're not using Rails)
+
+If you have both RSpec test and ActiveSupport::TestCase tests, you can run them like this:
+$ rspec # RSpec
+$ rake # RSpec
+$ rake test # ActiveSupport::TestCase
