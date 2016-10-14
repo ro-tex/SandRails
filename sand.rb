@@ -4,7 +4,7 @@
 
 $LOAD_PATH << '.' # tells Ruby to look for files in the current dir
 
-require 'lib'
+# require 'lib'
 
 class Greeter
 
@@ -134,10 +134,20 @@ if false # exceptions_and_control
   rescue
     # handles error - last exception is in $!
     retry # restart from beginning - similar to redo
+  else
+    # this is only executed if no exceptions were raised in the main block
+  ensure
+    # Ruby's 'finally'
+  end
+  
+  throw :lablename condition
+    #.. this will not be executed
+  catch :lablename do
+    #.. matching catch will be executed after a throw is encountered.
   end
 
   for i in 1..5
-    #retry if false # restart from i == 1
+    retry if false # restart from i == 1
   end
 
 end # exceptions_and_control
