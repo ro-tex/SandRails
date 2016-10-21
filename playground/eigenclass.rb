@@ -74,5 +74,12 @@ end
 # another way to execute something in the context of a class is this:
 String.class_exec { remove_method :imp }
 
+# A interesting distinction between remove_method and undef_method is that
+# remove_method strips only the method provided in the current class but not
+# the methods with the same name inherited from parents. Now, undef_method does
+# something slightly different - it prevents the given method from being called
+# at all. The current class's method cannot be called, parents' methods with that
+# name cannot be called, even send doesn't work. Really effective.
+
 # and this is how we de-register an object's singleton
 s.instance_eval { undef :very_imp }
