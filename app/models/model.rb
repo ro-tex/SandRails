@@ -1,9 +1,16 @@
 class Model < ActiveRecord::Base
+  @@class_message = 'Hello World!'.freeze
+  @message = '\'ello!'
+
+  def initialize(*message)
+    @message = message.nil? || message.empty? ? 'hi!' : message
+  end
+
   def slow
     sleep 2
-    puts 'hi'
+    puts @message
   end
-  handle_asynchronously :slow, run_at: proc { 1.minute.from_now }
+  # handle_asynchronously :slow, run_at: proc { 1.minute.from_now }
 
   # Run like this:
   # Delayed::Worker.new.run(Delayed::Job.find(id))
@@ -23,6 +30,7 @@ class Model < ActiveRecord::Base
 
   def put_id
     puts id.inspect
+    puts @id.inspect # what does this do and what's the difference?
   end
 
   # We just want to have someting testable
