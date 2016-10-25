@@ -24,8 +24,26 @@ class Box < Object
   def to_s
     "(data:#{@data},val:#{@val})"
   end
+
+  def +(other)
+    Box.new(@data + other.data)
+  end
+
+  def -(other)
+    Box.new(@data - other.data)
+  end
+
+  def -@ # unary negate
+    Box.new(@data.map(&:-@)) # this map was map{ |x| -x } before the beautification
+  end
 end
 
 puts Box.new.inspect
 puts Box.new(1, 2, 3).inspect
 puts "This is a box object: #{Box.new(1, 2)}" # this is why it's a good thing to define to_s for your class
+
+b = Box.new(1)
+b.send('initialize', 1, 2, 3, 4) # illegally access a provate method
+puts "Illegally modified object: #{b}"
+
+bb = Box.allocate # create an object without calling its initialize. Doesn't sound like a good idea.
