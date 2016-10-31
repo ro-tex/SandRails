@@ -7,8 +7,9 @@
 # 2. the class's own singleton object: then those will trigger when we add singleton methods
 #   to the class itself. Note: class methods *are* singleton methods.
 class String
+  # The eigenclass is basically the object that represents the class itself.
   class << self
-    # These below will only be active for the eigenclass object
+    # These below will only be active for the eigenclass object:
     def singleton_method_added(id)
       puts "String class >> Adding #{id.id2name}..."
     end
