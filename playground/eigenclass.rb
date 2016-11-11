@@ -84,3 +84,8 @@ String.class_exec { remove_method :imp }
 
 # and this is how we de-register an object's singleton
 s.instance_eval { undef :very_imp }
+
+String.define_singleton_method(:another) do
+  'Another way...'
+end
+puts String.another
