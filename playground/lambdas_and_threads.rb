@@ -1,67 +1,52 @@
-# require 'parallel_minion'
-# def threads
-#   now = Time.now
-#   threads = []
-#   (0..10).each do |t|
-#     threads[t] = ParallelMinion::Minion.new() do
-#       calc(t, now)
-#     end
-#   end
+def threads
+  now = Time.now
+  threads = []
+  (0..10).each do |t|
+    threads[t] = Thread.new do
+      calc(t, now)
+    end
+  end
 
-#   threads.each do |tr|
-#     puts tr.result
-#   end
-# end
+  threads.each do |tr|
+    puts tr.join
+  end
+end
 
-# def threads2
-#   now = Time.now
-#   threads = []
-#   (0..10).each do |t|
-#     threads[t] = Thread.new() do
-#       calc(t, now)
-#     end
-#   end
-
-#   threads.each do |tr|
-#     puts tr.join
-#   end
-# end
-
-# def calc(t, time)
-#   n = 0
-#   while (Time.now < time + 30)
-#     n += 1
-#     print t
-#   end
-# end
+def calc(t, time)
+  n = 0
+  while Time.now < time + 30
+    n += 1
+    print t
+  end
+end
 
 # threads
 
-def pif1 n
+def pif1(n)
   puts n if yield n
 end
 
 print 'block: '
-pif1(4) { |e| e % 2 == 0 }
+pif1(4, &:even?)
 
-p = proc { |e| e % 2 == 0 }
+p = proc { |e| e.even? }
 
 print 'proc as block: '
 pif1(4, &p) # The '&' tells ruby to turn the proc into a block
 
 print 'proc as arg: '
 
-def pif2 n, p
+def pif2(n, p)
   puts n if p.call n
 end
 
 pif2(4, p)
 
-def make_lambda &bbb
+def make_lambda(&bbb)
   proc &bbb
 end
 
-lam = make_lambda { puts "lambda, yo!" }
+lam = make_lambda { puts 'lambda, yo!' }
 
 lam.call
 
@@ -69,15 +54,15 @@ lam2 = -> (l) { puts "another #{l}, yo!" }
 lam2.call(:lambda)
 
 class Array
-  def mod *a
+  def mod(*a)
     unless a.nil?
       puts 'monkey!'
-      a.map {|x| {x => self}}
+      a.map { |x| { x => self } }
     end
   end
 end
 
-a = ['a', 'b']
+a = %w(a b)
 b = [1, 2, 3]
 puts a.mod *b # *b will unpack the array!
 
@@ -142,8 +127,21 @@ puts "========================\n\n"
 
 # Spin a task in a background process (only works on POSIX OSs)
 job1 = fork do
-  `top` # exec "top" or %x( top )
+  `ls` # exec "top" or %x( top )
 end
 
 Process.detach(job1)
 
+# puts "========================\n\n"
+
+def return_binding
+  context = 'I\'m in the return_binding method!'
+  binding # creates an anchor / snapshot
+end
+
+bind = return_binding
+# puts bind.inspect # #<Binding:0x007fec84055320>
+
+context = 'Something, something, dark side.' # this doesn't matter
+puts bind.eval('context')
+puts context # this is the outside one - we can't access the inner one directly
