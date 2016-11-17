@@ -47,7 +47,5 @@ p = Proc.new { puts 'Hi from a proc.'}
 get_proc &p # converting a proc into a block
 puts '----------------'
 
-
-
-
-puts "\n\n\n"
+# converting an array to hash with a splat:
+p Hash[*['k1', 'v1', 'k2', 'v2']]
