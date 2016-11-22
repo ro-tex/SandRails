@@ -26,8 +26,6 @@ gem 'delayed_job_active_record'
 # Use Unicorn as the app server
 gem 'unicorn'
 
-gem 'ruby-spark'
-
 group :development do
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
@@ -42,7 +40,9 @@ group :development do
   gem 'sdoc', '~> 0.4.0', group: :doc
 
   # Use Capistrano for deployment
-  gem 'capistrano-rails'
+  # gem 'capistrano-rails'
+  
+  gem 'rack-mini-profiler'
 end
 
 group :development, :test do
