@@ -14,10 +14,7 @@ end
 
 def calc(t, time)
   n = 0
-  while Time.now < time + 30
-    n += 1
-    print t
-  end
+  print t while Time.now < time + 30 # an awesome one-liner! works with 'until', too.
 end
 
 # threads
