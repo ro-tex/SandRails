@@ -1,0 +1,5 @@
+Rails 5 Notes:
+
+ - API mode
+
+ - JSONAPI::Resources -> https://github.com/cerebris/jsonapi-resources (Rails 4+)
