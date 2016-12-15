@@ -4,8 +4,9 @@ require 'bigdecimal/math'
 # puts Benchmark.measure { BigMath.PI(10_000) }
 
 iterations = 100_000
+padding = 30
 
-Benchmark.bm do |bm|
+Benchmark.bm(padding) do |bm|
   # joining an array of strings
   bm.report('joining an array of strings') do
     iterations.times do
