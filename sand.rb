@@ -42,11 +42,11 @@ class Greeter
   end
 
   def hi
-    puts "Hello #{@name.capitalize}"
+    puts "Hello #{@name}"
   end
 
   def bye
-    puts "Bye #{@name.capitalize}"
+    puts "Bye #{@name}"
   end
 
   def self.foo
@@ -59,10 +59,10 @@ end
 
 # Greeter.foo # this is how we use libraries
 
-# This allows a file to be used as a library, and not to execute code in that context,
-# but if the file is being used as an executable, then execute that code.
+# This allows a file to be used both as a ibrary and as an executable
+# but only execute a given code block when called as an executable.
 if __FILE__ == $PROGRAM_NAME
-  # puts 'Our sand.rb is being used directly - as an executable file.'
+  puts 'Our sand.rb is being used directly - as an executable file.'
 end
 
 g = Greeter.new 'Andy'
@@ -87,12 +87,15 @@ if false # basics
   puts "Duck typing: #{arr}"
 
   arr = nil
-  puts 'arr is nil' if arr.nil? # trailing if demo
+  puts 'arr is nil' if arr.nil? # trailing 'if' demo
   puts 'trailing unless' unless false
 
-  puts 'regular unless' unless false
+  unless false
+    # keep this comment, so Rubocop doesn't turn this into a trailing unless
+    puts 'regular unless'
+  end
 
-  puts !arr.nil? && !arr.empty? ? ('arr len is ' + arr.length.to_s) : 'empty' # shorthand if works
+  puts defined?(arr) ? ('arr len is ' + arr.length.to_s) : 'empty' # shorthand if works
 
   (1...3).each { |a| puts a } # ranges that exclude the end value (use .. to include it):
 
@@ -100,39 +103,43 @@ if false # basics
 
   { 'a' => 1, 'b' => 3 }.each { |k, v| puts "key #{k} -> value #{v}" } # hashes
 
-  arr = 'asdf'
+  foo = 'asdf'
   # a nice, flexible switch... erm... case
-  case arr
+  case foo
   when nil
-    puts 'arr is nil!'
-    # when 1..5: puts "arr is one"
-  when 'asdf', 'asdfg' then puts arr
+    puts 'foo is nil!'
+  when 1..5
+    puts 'foo is between one and five'
+  when 'asdf', 'asdfg' then puts foo
   else
     puts 'none of the above'
   end
+
 end # basics
 
-if false # exceptions_and_control
+if false # exceptions and control
 
   for i in 1..5
-    # do nothing
     next if i == 2 # aka 'continue'
-    # next: Jumps to next iteration of the most internal loop. Terminates execution of a block if called within a block (with yield or call returning nil).
+    # next: Jumps to next iteration of the most internal loop.
+    # Terminates execution of a block if called within a block (with yield or call returning nil).
 
     if $ERROR_INFO == 'bla' # if the last raised exception is 'bla' redo the innermost loop
-      redo # Restarts this iteration of the most internal loop, without checking loop condition. Restarts yield or call if called within a block.
+      # Restarts this iteration of the most internal loop, without checking loop condition.
+      # Restarts yield or call if called within a block.
+      redo
     end
   end
 
   # try-catch-retry:
   begin
-    # do_something # exception raised
-    rescue
-        # handles error - last exception is in $!
-        retry # restart from beginning - similar to redo
-    else
-    # this is only executed if no exceptions were raised in the main block
-    ensure
+    # do_something that might raise an exception
+  rescue
+        # handles error - last exception is in '$!'
+      retry # restart from beginning - similar to redo
+  else
+      # this is only executed if no exceptions were raised in the main block
+  ensure
     # Ruby's 'finally'
   end
 
@@ -171,7 +178,7 @@ c = 1.0
 a == b # true
 a.eql?(b) # false
 b.eql?(c) # true
-b.equal?(c) # false, if different objects
+b.equal?(c) # false if different objects
 
 =begin
 This is how
@@ -181,7 +188,9 @@ in Ruby.
 =end
 
 def tag_list=(value) # I guess a way to define a param?
-  self.tags = value.split(',').map(&:strip) # why do we need the &? how does map work? what's :strip, exactly?
+  # The '&:' in the map means that it will call a class method called 'strip' on each value.
+  # A shorthand for map{|x| x.class.strip(x)}
+  self.tags = value.split(',').map(&:strip)
 end
 
 a ||= {} # conditional initialisation - nothing happens if already initialised
@@ -199,7 +208,7 @@ undef foo # remove foo but bar is still callable
 #   space.description = space.alt_name if !space.alt_name.nil? and space.alt_name.size > 0
 # end
 
-if true # Blocks
+if false # Blocks
 
   def block
     puts ' === block === '
@@ -221,14 +230,15 @@ if true # Blocks
 
     puts "outside #{x}"
     yield x
-    puts "outside #{x}"
+    puts "outside #{x}" # x can't be changed in the block
     yield x
 
     puts ' === end === '
   end
   foo(1) # Try without giving a block
   foo(1) { |n| n += 10; puts "in da block: #{n}" } # Executes foo but can't change the local variable x
-  l = -> (n) { n += 20; puts "in da lambda: #{n}" }
+  
+  l = ->(n) { n += 20; puts "in da lambda: #{n}" }
   foo(1, &l) # This is the most functional bit - passing a named lambda
 
 end
@@ -262,10 +272,10 @@ end # Modules
 
 # String ops
 if false
-  # puts %{this is a string} # delimiters: !, {, [, (, <.
-  # puts %q(this is a single-quoted string: #{1+2+3})
-  # puts %Q(this is a double-quoted string: #{1+2+3})
-  # puts %x{ls -lh} # this string is the output of the command
+  puts %{this is a string} # delimiters: !, {, [, (, <.
+  puts %q(this is a single-quoted string: #{1+2+3})
+  puts %Q(this is a double-quoted string: #{1+2+3})
+  puts %x{ls -lh} # this string is the output of the command
   puts ' lala   '.strip # remove whitespaces
   puts 'abcdefg'[2..5] # "cdef" - substring
   puts 'abcdefg'[2, 5] # "cdefg" - offset, length
@@ -274,7 +284,7 @@ if false
 
   'abc'.is_a?(String) # typeof check
   'abc'.instance_of? String
-  'abc'.respond_to?(:to_s) # Duck typing, if it qucks like a string then it's a string
+  'abc'.respond_to?(:to_s) # Duck typing, if it quacks like a string then it's a string
 
   'abc'.inspect # Returns a printable version of str, with special characters escaped.
   'abc'.intern === 'abc'.to_sym # Returns the Symbol corresponding to str, creating the symbol if it did not previously exist.
