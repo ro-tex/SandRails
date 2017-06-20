@@ -1,6 +1,7 @@
 class Model < ActiveRecord::Base
   @@class_message = 'Hello World!'.freeze
   @message = '\'ello!'
+  @id
 
   def initialize(*message)
     @message = message.nil? || message.empty? ? 'hi!' : message
@@ -28,9 +29,15 @@ class Model < ActiveRecord::Base
     input
   end
 
-  def put_id
-    puts id.inspect
-    puts @id.inspect # what does this do and what's the difference?
+  def smth_id
+    id = 7
+    puts id.inspect         # access local variable
+    puts @id.inspect        # access object variable
+    puts @@class_message    # access class variable
+  end
+
+  def set_id(id)
+    @id = id
   end
 
   # We just want to have someting testable
