@@ -61,7 +61,7 @@ end
 
 # This allows a file to be used both as a ibrary and as an executable
 # but only execute a given code block when called as an executable.
-if __FILE__ == $PROGRAM_NAME
+if $PROGRAM_NAME == __FILE__
   puts 'Our sand.rb is being used directly - as an executable file.'
 end
 
@@ -72,7 +72,7 @@ g = Greeter.new 'Andy'
 # puts g.name
 
 if false # basics
-  arr = %w(a b c)
+  arr = %w[a b c] # delimiters: !, {, [, (, <.
 
   if arr.respond_to?('each') # THIS CHECKS IF WE CAN ITERATE OVER THE COLLECTION WITH EACH! OMFG!
     arr.each do |e|
@@ -134,12 +134,12 @@ if false # exceptions and control
   # try-catch-retry:
   begin
     # do_something that might raise an exception
-  rescue
+    rescue
         # handles error - last exception is in '$!'
-      retry # restart from beginning - similar to redo
-  else
+        retry # restart from beginning - similar to redo
+    else
       # this is only executed if no exceptions were raised in the main block
-  ensure
+    ensure
     # Ruby's 'finally'
   end
 
@@ -237,7 +237,7 @@ if false # Blocks
   end
   foo(1) # Try without giving a block
   foo(1) { |n| n += 10; puts "in da block: #{n}" } # Executes foo but can't change the local variable x
-  
+
   l = ->(n) { n += 20; puts "in da lambda: #{n}" }
   foo(1, &l) # This is the most functional bit - passing a named lambda
 
@@ -290,3 +290,6 @@ if false
   'abc'.intern === 'abc'.to_sym # Returns the Symbol corresponding to str, creating the symbol if it did not previously exist.
   'abc'.scan('a') { |match| puts match }
 end
+
+# demonstrate the order of operations when running a chain of select-map-reduce
+puts (1..3).map { |x| puts "first map #{x}"; x * 2 }.select { |x| puts "select #{x}"; x < 5 }.map { |x| puts "second map #{x}"; x * 3 }.reduce(100) { |x, y| x + y }
