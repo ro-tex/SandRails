@@ -43,7 +43,8 @@ puts Box.new(1, 2, 3).inspect
 puts "This is a box object: #{Box.new(1, 2)}" # this is why it's a good thing to define to_s for your class
 
 b = Box.new(1)
-b.send('initialize', 1, 2, 3, 4) # illegally access a provate method
+b.send('initialize', 1, 2, 3, 4) # illegally access a private method
 puts "Illegally modified object: #{b}"
 
 bb = Box.allocate # create an object without calling its initialize. Doesn't sound like a good idea.
+puts "Allocated but uninitialized object: #{bb}"

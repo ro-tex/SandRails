@@ -107,14 +107,14 @@ def get_r
   r = get(a) { print " block #{a += 2}" }
 
   r.call
-  a = 1000 # this affects the block
+  a = 1000 # this affects the block - the block is not a closure!
   r.call
-  puts a # a is affected b the operation in the block
+  puts a # a is affected by the operation in the block ('cause the block is not a closure)
 
   r
 end
 
-a = 50 # this is a different a - different cotext so it doesn't affect the creation of the lambda
+a = 50 # this is a different `a` - different cotext so it doesn't affect the creation of the lambda
 rrr = get_r
 rrr.call
 rrr.call # these continue to increment the internal counter and keep the value affixed in the block

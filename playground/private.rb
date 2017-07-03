@@ -24,16 +24,20 @@ class Private
   private
 
   def self.not_so_private_name
-    puts 'This is actually accessible (private class method)'
+    puts 'This is actually accessible (private class method) from anywhere.'
   end
 end
 
-# print 'direct: '; Private.print_name_private # This throws an error, as it should!
-print 'via getter: '; Private.expose_private_name
-print 'via send: '; Private.send('print_name_private')
-Private.not_so_private_name
+if $PROGRAM_NAME == __FILE__
 
-puts
-# print 'direct: '; Private.another_fully_private
-print 'via getter: '; Private.another_getter
-print 'via send: '; Private.send 'another_fully_private'
+  # print 'direct: '; Private.print_name_private # This throws an error, as it should!
+  print 'via getter: '; Private.expose_private_name
+  print 'via send: '; Private.send('print_name_private')
+  Private.not_so_private_name
+
+  puts
+  # print 'direct: '; Private.another_fully_private # This throws an error, as it should!
+  print 'via getter: '; Private.another_getter
+  print 'via send: '; Private.send 'another_fully_private'
+
+end
