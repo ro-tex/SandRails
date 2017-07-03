@@ -4,7 +4,7 @@
 
 $LOAD_PATH << '.' # tells Ruby to look for files in the current dir
 
-# require 'lib'
+require 'lib'
 
 class Greeter
   # define default getter and setter, just like making the field public
@@ -26,13 +26,15 @@ class Greeter
     @name = name.capitalize
   end
 
-  # getter
+  # getter, called when `puts greet.name` is used
   def name
+      p 'getter called'
     results = '--> ' + @name + ' <--'
   end
 
-  # setter
+  # setter, called when `greet.name = 'new name'` is used
   def name=(name)
+      p 'setter called'
     @name = name.capitalize
   end
 
@@ -54,12 +56,14 @@ class Greeter
   end
 end
 
+
+# greet = Greeter.new
 # Greeter.all
 # Greeter.where(name: 'Groot', instance_variable: 'instance')
 
 # Greeter.foo # this is how we use libraries
 
-# This allows a file to be used both as a ibrary and as an executable
+# This allows a file to be used both as a library and as an executable
 # but only execute a given code block when called as an executable.
 if $PROGRAM_NAME == __FILE__
   puts 'Our sand.rb is being used directly - as an executable file.'
@@ -102,6 +106,7 @@ if false # basics
   20.step(1, -3) { |x| puts x } # a fully crontolled for loop: from.step(to, step)
 
   { 'a' => 1, 'b' => 3 }.each { |k, v| puts "key #{k} -> value #{v}" } # hashes
+  { a: 1, b: 3 }.each { |k, v| puts "key #{k} -> value #{v}" } # hashes
 
   foo = 'asdf'
   # a nice, flexible switch... erm... case
@@ -110,35 +115,38 @@ if false # basics
     puts 'foo is nil!'
   when 1..5
     puts 'foo is between one and five'
-  when 'asdf', 'asdfg' then puts foo
+  when 'asdf', 'asdfg' then puts foo # if we want it on a single line
   else
     puts 'none of the above'
   end
 
 end # basics
 
+
 if false # exceptions and control
 
   for i in 1..5
-    next if i == 2 # aka 'continue'
     # next: Jumps to next iteration of the most internal loop.
     # Terminates execution of a block if called within a block (with yield or call returning nil).
+    next if i == 2 # aka 'continue'
 
-    if $ERROR_INFO == 'bla' # if the last raised exception is 'bla' redo the innermost loop
+    if $! == 'bla' # if the last raised exception is 'bla' redo the innermost loop
       # Restarts this iteration of the most internal loop, without checking loop condition.
       # Restarts yield or call if called within a block.
-      redo
+      redo # like a 'retry' but for loops
     end
   end
 
-  # try-catch-retry:
+  # try-catch-finally / begin-rescue-ensure:
   begin
     # do_something that might raise an exception
     rescue
-        # handles error - last exception is in '$!'
+        # handle error - last exception is in '$!'
         retry # restart from beginning - similar to redo
     else
-      # this is only executed if no exceptions were raised in the main block
+      # this is only executed if no exceptions were raised in the main block.
+      # very convenient to have sensitive logic here and init section in main
+      # so you'd only execute the sensitive part if the init was successful
     ensure
     # Ruby's 'finally'
   end
@@ -150,6 +158,7 @@ if false # exceptions and control
   end
 
 end # exceptions_and_control
+
 
 if false # multi-dimentional returns and processing
 
@@ -166,7 +175,15 @@ if false # multi-dimentional returns and processing
     puts "#{b1} # #{b2} # #{b3}"
   end
 
+  def return_many
+      return 1, 2, 3 # return multiple values
+  end
+
+  a, b, c = return_many # assign them to many variables
+  rets = return_many    # or to a single one and get an array
+
 end
+
 
 defined? $LAST_READ_LINE # always true
 
@@ -175,10 +192,10 @@ n = 1_024 # underscores are ignored in integers
 a = 1
 b = 1.0
 c = 1.0
-a == b # true
-a.eql?(b) # false
-b.eql?(c) # true
-b.equal?(c) # false if different objects
+a == b      # true  (compare by value)
+a.eql?(b)   # false (compare by value and type)
+b.eql?(c)   # true  (compare by value and type)
+b.equal?(c) # false (compare by object identity)
 
 =begin
 This is how
@@ -187,7 +204,7 @@ a multiline comment
 in Ruby.
 =end
 
-def tag_list=(value) # I guess a way to define a param?
+def tag_list=(value) # a setter
   # The '&:' in the map means that it will call a class method called 'strip' on each value.
   # A shorthand for map{|x| x.class.strip(x)}
   self.tags = value.split(',').map(&:strip)
@@ -204,16 +221,17 @@ alias bar foo # pointer to a function. points to the original function even afte
 
 undef foo # remove foo but bar is still callable
 
-# after_initialize do |space| # this is a post-construction hook
+# after_initialize do |space| # this is a post-construction hook in Rails
 #   space.description = space.alt_name if !space.alt_name.nil? and space.alt_name.size > 0
 # end
+
 
 if false # Blocks
 
   def block
     puts ' === block === '
     yield 1
-    yield 2, 3
+    yield 2, 3 # the second param will be ignored in a block with a single param (won't loop)
     yield
     puts ' === end === '
   end
@@ -243,6 +261,7 @@ if false # Blocks
 
 end
 
+
 if false # Modules
 
   module Mod1
@@ -270,8 +289,8 @@ if false # Modules
 
 end # Modules
 
-# String ops
-if false
+
+if false # String ops
   puts %{this is a string} # delimiters: !, {, [, (, <.
   puts %q(this is a single-quoted string: #{1+2+3})
   puts %Q(this is a double-quoted string: #{1+2+3})
@@ -289,7 +308,10 @@ if false
   'abc'.inspect # Returns a printable version of str, with special characters escaped.
   'abc'.intern === 'abc'.to_sym # Returns the Symbol corresponding to str, creating the symbol if it did not previously exist.
   'abc'.scan('a') { |match| puts match }
-end
+end # String ops
+
 
 # demonstrate the order of operations when running a chain of select-map-reduce
-puts (1..3).map { |x| puts "first map #{x}"; x * 2 }.select { |x| puts "select #{x}"; x < 5 }.map { |x| puts "second map #{x}"; x * 3 }.reduce(100) { |x, y| x + y }
+if false
+    puts (1..3).map { |x| puts "first map #{x}"; x * 2 }.select { |x| puts "select #{x}"; x < 5 }.map { |x| puts "second map #{x}"; x * 3 }.reduce(100) { |x, y| x + y }
+end
