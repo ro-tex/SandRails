@@ -1,4 +1,4 @@
-class CreateModels < ActiveRecord::Migration
+class CreateModels < ActiveRecord::Migration[5.0]
   def change
     create_table :models do |t|
 
