@@ -94,12 +94,15 @@ if false # basics
   puts 'arr is nil' if arr.nil? # trailing 'if' demo
   puts 'trailing unless' unless false
 
+  # this form would also work, should you need to use it (mutiline as well):
+  # foo = if arr.nil? then 'bar' else arr end
+
   unless false
     # keep this comment, so Rubocop doesn't turn this into a trailing unless
     puts 'regular unless'
   end
 
-  puts defined?(arr) ? ('arr len is ' + arr.length.to_s) : 'empty' # shorthand if works
+  puts defined?(arr) && !arr.nil? ? ('arr len is ' + arr.length.to_s) : 'empty' # shorthand if works
 
   (1...3).each { |a| puts a } # ranges that exclude the end value (use .. to include it):
 
